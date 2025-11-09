@@ -46,7 +46,7 @@ export const OrganicBadge = ({
 
   return (
     <span
-      className={`relative inline-flex items-center justify-center text-[#1e1e1e] ${sizeConfig.px} ${className}`}
+      className={`relative inline-flex items-center justify-center ${sizeConfig.px} ${className}`}
       style={{
         filter: 'drop-shadow(3px 3px 0 rgba(0,0,0,0.05))',
         height: `${sizeConfig.height}px`

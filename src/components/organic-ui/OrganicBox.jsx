@@ -2,7 +2,9 @@
 // ARCHIVO: src/components/organic-ui/OrganicBox.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateOrganicPath, brushShadows, getSpacing } from './utils';
+import { generateOrganicPath, brushShadows, getSpacing, getColor, organicSeeds, organicShapePresets } from './utils';
+
+const CONTAINER_PRESET = organicShapePresets.container;
 
 /**
  * OrganicBox - Contenedor base con estilo orgánico
@@ -24,21 +26,21 @@ export const OrganicBox = ({
   children,
   className = "",
   strokeWidth = 5,
-  cornerRadius = 16,
-  wobbleIntensity = 6,
-  backgroundColor = "var(--brush-surface, #ffffff)",
-  strokeColor = "var(--brush-border, #000000)",
+  cornerRadius = CONTAINER_PRESET.cornerRadius,
+  wobbleIntensity = CONTAINER_PRESET.wobble,
+  backgroundColor = getColor('surface'),
+  strokeColor = getColor('border'),
   pathId = null,
   style = {}
 }) => {
   // Path orgánico inspirado en OrganicInput (width 600) para lograr escalado uniforme
   const pathD = useMemo(() => {
     return generateOrganicPath({
-      width: 600,
-      height: 220,
+      width: CONTAINER_PRESET.width,
+      height: CONTAINER_PRESET.height,
       cornerRadius,
       wobbleIntensity,
-      seed: 87431 // Seed fijo para consistencia visual en contenedores
+      seed: organicSeeds.box
     });
   }, [cornerRadius, wobbleIntensity]);
 
@@ -48,7 +50,7 @@ export const OrganicBox = ({
   const classNameWithoutPadding = className.replace(paddingRegex, '').trim();
   const defaultPadding = paddingClasses.length === 0 ? { padding: getSpacing('container', 'clamp(1.25rem, 4vw, 2.75rem)') } : {};
   const contentStyle = {
-    color: 'var(--brush-surface-text, #1f2937)',
+    color: getColor('surfaceText'),
     ...defaultPadding
   };
 
@@ -59,7 +61,7 @@ export const OrganicBox = ({
     >
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox="0 0 600 220"
+        viewBox={`0 0 ${CONTAINER_PRESET.width} ${CONTAINER_PRESET.height}`}
         preserveAspectRatio="none"
         style={{ overflow: 'visible' }}
       >

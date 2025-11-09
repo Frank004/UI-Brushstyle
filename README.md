@@ -139,6 +139,17 @@ pnpm dev -- --host 127.0.0.1 --port 3000
 
 La app demo está en `src/App.jsx`. Allí puedes ver ejemplos de cada componente y cómo integrarlos.
 
+## Despliegue en GitHub Pages
+
+El repositorio incluye un workflow automático (`.github/workflows/deploy.yml`) que publica el contenido de `dist/` en la rama `gh-pages` cada vez que se hace push a `master`.
+
+1. Asegúrate de que `vite.config.js` tenga `base: '/UI-Brushstyle/'`.
+2. Realiza `pnpm build` para confirmar que la demo compila con el nuevo base.
+3. Haz push a `master`; GitHub Actions ejecutará `pnpm build` y subirá el resultado a `gh-pages`.
+4. En Settings → Pages, selecciona la rama `gh-pages` (carpeta `/root`).
+
+También se añadió el script `pnpm deploy` para un despliegue manual (usa `gh-pages -d dist`).
+
 ## Desarrollo
 
 - Vite 6 + React 18

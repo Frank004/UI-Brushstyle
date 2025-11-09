@@ -15,7 +15,8 @@
     "build:lib": "rollup -c",
     "preview": "vite preview",
     "lint": "eslint src --ext js,jsx",
-    "prepublishOnly": "pnpm run build:lib"
+    "prepublishOnly": "pnpm run build:lib",
+    "deploy": "pnpm build && pnpm exec gh-pages -d dist"
   },
   "keywords": [
     "react",
@@ -27,16 +28,16 @@
     "svg",
     "design-system"
   ],
-  "author": "Your Name",
+  "author": "Frank004",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ui-brushstyle.git"
+    "url": "https://github.com/Frank004/UI-Brushstyle.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/ui-brushstyle/issues"
+    "url": "https://github.com/Frank004/UI-Brushstyle/issues"
   },
-  "homepage": "https://github.com/yourusername/ui-brushstyle#readme",
+  "homepage": "https://frank004.github.io/UI-Brushstyle/",
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
@@ -57,7 +58,8 @@
     "rollup": "^4.9.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "tailwindcss": "^3.3.5",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "gh-pages": "^6.1.1"
   },
   "dependencies": {
     "react-icons": "^5.5.0"

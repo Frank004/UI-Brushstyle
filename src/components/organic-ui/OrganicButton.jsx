@@ -2,7 +2,9 @@
 // ARCHIVO: src/components/organic-ui/OrganicButton.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateOrganicPath, colorVariants, sizeConfigs, brushShadows, getFontFamily, getFontWeight } from './utils';
+import { generateOrganicPath, colorVariants, sizeConfigs, brushShadows, getFontFamily, getFontWeight, organicShapePresets, organicSeeds } from './utils';
+
+const BUTTON_PRESET = organicShapePresets.button;
 
 /**
  * OrganicButton - Botón con estilo orgánico
@@ -40,16 +42,16 @@ export const OrganicButton = ({
   // Mantener aspect ratio consistente (15:1 ratio como en el original 600:40)
   // Esto asegura que todos los tamaños tengan el mismo estilo visual
   const pathWidth = useMemo(() => {
-    return pathHeight * 15; // Mantener proporción 15:1
+    return pathHeight * BUTTON_PRESET.widthRatio;
   }, [pathHeight]);
 
   const pathD = useMemo(() => {
     return generateOrganicPath({
       width: pathWidth,
       height: pathHeight,
-      cornerRadius: 20,
-      wobbleIntensity: 8,
-      seed: 12345 // Seed fijo para consistencia
+      cornerRadius: BUTTON_PRESET.cornerRadius,
+      wobbleIntensity: BUTTON_PRESET.wobble,
+      seed: organicSeeds.button
     });
   }, [pathHeight, pathWidth]);
 
