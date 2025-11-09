@@ -2,7 +2,7 @@
 // ARCHIVO: src/components/organic-ui/OrganicBox.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateOrganicPath, brushShadows } from './utils';
+import { generateOrganicPath, brushShadows, getSpacing } from './utils';
 
 /**
  * OrganicBox - Contenedor base con estilo orgánico
@@ -26,8 +26,8 @@ export const OrganicBox = ({
   strokeWidth = 5,
   cornerRadius = 16,
   wobbleIntensity = 6,
-  backgroundColor = "white",
-  strokeColor = "#000000",
+  backgroundColor = "var(--brush-surface, #ffffff)",
+  strokeColor = "var(--brush-border, #000000)",
   pathId = null,
   style = {}
 }) => {
@@ -46,7 +46,11 @@ export const OrganicBox = ({
   const paddingRegex = /\b(p|px|py|pt|pb|pl|pr)-\d+\b/g;
   const paddingClasses = className.match(paddingRegex) || [];
   const classNameWithoutPadding = className.replace(paddingRegex, '').trim();
-  const defaultPadding = paddingClasses.length === 0 ? { padding: 'clamp(1.1rem, 4.5vw, 2.75rem)' } : {};
+  const defaultPadding = paddingClasses.length === 0 ? { padding: getSpacing('container', 'clamp(1.25rem, 4vw, 2.75rem)') } : {};
+  const contentStyle = {
+    color: 'var(--brush-surface-text, #1f2937)',
+    ...defaultPadding
+  };
 
   return (
     <div
@@ -71,7 +75,7 @@ export const OrganicBox = ({
       </svg>
       <div
         className={`relative z-10 ${paddingClasses.join(' ')}`}
-        style={defaultPadding}
+        style={contentStyle}
       >
         {children}
       </div>

@@ -24,7 +24,14 @@ import {
   OrganicTabs,
   OrganicFileUpload,
   OrganicSlider,
-  OrganicPagination
+  OrganicPagination,
+  OrganicDrawer,
+  OrganicPopover,
+  OrganicTable,
+  OrganicStepper,
+  OrganicDivider,
+  ThemeProvider,
+  useTheme
 } from './components/organic-ui';
 import {
   TfiPalette,
@@ -34,19 +41,26 @@ import {
   TfiWrite,
   TfiCommentAlt,
   TfiBell,
-  TfiBoltAlt
+  TfiBoltAlt,
+  TfiLayoutMenuSeparated,
+  TfiLayoutGrid2,
+  TfiPulse
 } from 'react-icons/tfi';
 
 function App() {
   return (
-    <OrganicToastProvider>
-      <AppDemo />
-    </OrganicToastProvider>
+    <ThemeProvider>
+      <OrganicToastProvider>
+        <AppDemo />
+      </OrganicToastProvider>
+    </ThemeProvider>
   );
 }
 
 function AppDemo() {
   const { addToast } = useOrganicToast();
+  const { theme, toggleTheme, tokens } = useTheme();
+  const isDarkTheme = theme === 'dark';
 
   // Estados para el formulario
   const [email, setEmail] = useState('');
@@ -58,7 +72,7 @@ function AppDemo() {
   const [notifications, setNotifications] = useState(false);
   const [darkMode, setDarkMode] = useState(false); // Estado para el tercer toggle
   const [gender, setGender] = useState('');
-  const [theme, setTheme] = useState('light');
+  const [formTheme, setFormTheme] = useState('light');
   const [notificationCount, setNotificationCount] = useState(5);
   
   // Estados para las tareas
@@ -68,7 +82,11 @@ function AppDemo() {
   const [task4, setTask4] = useState(false);
   const [filesList, setFilesList] = useState([]);
   const [volume, setVolume] = useState(40);
+  const [brightness, setBrightness] = useState(65);
+  const [warmth, setWarmth] = useState(25);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
 
   // Modal
   const modal = useModal();
@@ -153,8 +171,14 @@ function AppDemo() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div
+      className="min-h-screen transition-colors duration-500"
+      style={{ background: tokens.palette.background, color: tokens.palette.text }}
+    >
+      <div
+        className="max-w-7xl mx-auto space-y-8"
+        style={{ padding: tokens.spacing.section }}
+      >
         <OrganicNavbar
           brand={
             <div className="flex items-center gap-2">
@@ -177,18 +201,18 @@ function AppDemo() {
               })
             },
             secondary: {
-              label: 'Changelog',
-              onClick: () => addToast({
-                variant: 'info',
-                title: 'Versión 1.0.0',
-                description: 'Consulta las novedades del lanzamiento.'
-              })
+              label: theme === 'light' ? 'Modo oscuro' : 'Modo claro',
+              onClick: toggleTheme
             }
           }}
         />
         
         {/* Header con Badge y Tooltip */}
-        <OrganicBox className="p-8 text-center">
+        <OrganicBox
+          className="p-8 text-center text-[#1e1e1e]"
+          backgroundColor="#ffffff"
+          strokeColor="#111827"
+        >
           <div className="flex items-center justify-center gap-4 mb-4">
             <h1 className="text-5xl font-black">UI Brushstyle</h1>
             <OrganicBadge variant="primary" size="small">v1.0</OrganicBadge>
@@ -234,11 +258,21 @@ function AppDemo() {
               title="Guardado correcto"
               description="Tus cambios se sincronizaron con el servidor."
               compact
+              onClose={() => addToast({
+                variant: 'success',
+                title: 'Alerta cerrada',
+                description: 'La alerta de guardado se ocultó.'
+              })}
             />
             <OrganicAlert
               variant="danger"
               title="Error al conectar"
               description="No se pudo establecer conexión con el API. Revisaremos los logs."
+              onClose={() => addToast({
+                variant: 'danger',
+                title: 'Alerta cerrada',
+                description: 'Revisaremos los detalles más tarde.'
+              })}
             />
           </div>
         </OrganicCard>
@@ -260,6 +294,8 @@ function AppDemo() {
                 key={variant}
                 variant={variant === 'info' ? 'info' : variant}
                 size="small"
+                fullWidth={false}
+                className="px-8"
                 onClick={() =>
                   addToast({
                     variant,
@@ -299,6 +335,53 @@ function AppDemo() {
             <OrganicButton variant="primary" size="small">Small Button</OrganicButton>
             <OrganicButton variant="primary" size="medium">Medium Button</OrganicButton>
             <OrganicButton variant="primary" size="large">Large Button</OrganicButton>
+          </div>
+        </OrganicCard>
+
+        {/* Badges */}
+        <OrganicCard
+          title={
+            <span className="inline-flex items-center gap-2">
+              <TfiBoltAlt className="h-5 w-5" /> Badges
+            </span>
+          }
+          className="p-6 space-y-6"
+        >
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="flex flex-col gap-4">
+              <p className="text-sm text-[#1e1e1e]/70">Variantes sólidas</p>
+              <div className="flex flex-wrap gap-3">
+                <OrganicBadge variant="default">Default</OrganicBadge>
+                <OrganicBadge variant="primary">Nuevo</OrganicBadge>
+                <OrganicBadge variant="success">Activo</OrganicBadge>
+                <OrganicBadge variant="warning">Beta</OrganicBadge>
+                <OrganicBadge variant="danger">Error</OrganicBadge>
+                <OrganicBadge variant="info">Info</OrganicBadge>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <p className="text-sm text-[#1e1e1e]/70">Contadores superpuestos</p>
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="relative inline-flex items-center">
+                  <OrganicButton variant="default" size="small" fullWidth={false}>
+                    Notificaciones
+                  </OrganicButton>
+                  <OrganicBadgeCount count={notificationCount} className="-right-3 -top-3" />
+                </div>
+                <div className="relative inline-flex items-center">
+                  <OrganicButton variant="primary" size="small" fullWidth={false}>
+                    Tareas
+                  </OrganicButton>
+                  <OrganicBadgeCount count={23} className="-right-3 -top-3" />
+                </div>
+                <div className="relative inline-flex items-center">
+                  <OrganicButton variant="success" size="small" fullWidth={false}>
+                    Mensajes
+                  </OrganicButton>
+                  <OrganicBadgeCount count={3} className="-right-3 -top-3" />
+                </div>
+              </div>
+            </div>
           </div>
         </OrganicCard>
 
@@ -388,7 +471,11 @@ function AppDemo() {
         </div>
 
         {/* Formulario Completo */}
-        <OrganicBox className="p-8">
+        <OrganicBox
+          className="p-8 text-[#1e1e1e]"
+          backgroundColor="#ffffff"
+          strokeColor="#111827"
+        >
           <h2 className="text-3xl font-bold mb-6 inline-flex items-center gap-2">
             <TfiWrite className="h-6 w-6" /> Formulario de Registro
           </h2>
@@ -462,8 +549,8 @@ function AppDemo() {
               <label className="block mb-3 font-semibold text-gray-700">Tema preferido</label>
               <OrganicRadioGroup
                 options={themeOptions}
-                value={theme}
-                onChange={(e) => setTheme(e.target.value)}
+                value={formTheme}
+                onChange={(e) => setFormTheme(e.target.value)}
                 name="theme"
                 orientation="vertical"
               />
@@ -496,7 +583,7 @@ function AppDemo() {
                 setCountry('');
                 setTerms(false);
                 setGender('');
-                setTheme('light');
+                setFormTheme('light');
               }}>
                 Limpiar
               </OrganicButton>
@@ -505,27 +592,74 @@ function AppDemo() {
         </OrganicBox>
 
         {/* File Upload Demo */}
-        <OrganicCard title="Carga de archivos" className="p-6">
+        <section className="space-y-4">
+          <h3 className={`font-black text-3xl ${isDarkTheme ? 'text-white' : 'text-[#1e1e1e]'}`}>
+            Carga de archivos
+          </h3>
           <OrganicFileUpload
             onFilesSelected={setFilesList}
             maxSize={5 * 1024 * 1024}
           />
           {filesList.length > 0 && (
-            <p className="mt-4 text-sm text-[#1e1e1e]/70">
+            <p className={`text-sm ${isDarkTheme ? 'text-white/80' : 'text-[#1e1e1e]/70'}`}>
               {filesList.length} archivo(s) listos para subir.
             </p>
           )}
-        </OrganicCard>
+        </section>
 
         {/* Slider Demo */}
-        <OrganicCard title="Control deslizante" className="p-6">
+        <OrganicCard title="Control deslizante" className="p-6 space-y-6">
           <OrganicSlider
             label="Volumen"
             value={volume}
             min={0}
             max={100}
             onChange={setVolume}
+            accentColor="#2563eb"
+            baseColor="#e0e7ff"
           />
+          <OrganicSlider
+            label="Brillo"
+            value={brightness}
+            min={0}
+            max={100}
+            onChange={setBrightness}
+            accentColor="#f97316"
+            baseColor="#fef3c7"
+          />
+          <OrganicSlider
+            label="Temperatura"
+            value={warmth}
+            min={0}
+            max={100}
+            onChange={setWarmth}
+            accentColor="#10b981"
+            baseColor="#dcfce7"
+          />
+        </OrganicCard>
+
+        {/* Dividers */}
+        <OrganicCard title="Divisores" className="p-6 space-y-6">
+          <div className="space-y-6">
+            <OrganicDivider thickness={10} color="#111827" />
+            <div className="flex items-stretch gap-6">
+              <div className="flex-1 space-y-3 text-sm text-[#1e1e1e]/80">
+                <p className="font-semibold text-[#1e1e1e]">Bloque izquierdo</p>
+                <p>
+                  Usa el divisor horizontal para separar secciones dentro de cards o paneles. El trazo mantiene
+                  variaciones orgánicas.
+                </p>
+              </div>
+              <OrganicDivider orientation="vertical" length="120px" thickness={10} color="#2563eb" />
+              <div className="flex-1 space-y-3 text-sm text-[#1e1e1e]/80">
+                <p className="font-semibold text-[#1e1e1e]">Bloque derecho</p>
+                <p>
+                  También puedes usar la versión vertical para separar acciones, resumenes o listados dentro de layouts
+                  más complejos.
+                </p>
+              </div>
+            </div>
+          </div>
         </OrganicCard>
 
         {/* Pagination Demo */}
@@ -535,6 +669,105 @@ function AppDemo() {
             totalPages={12}
             onPageChange={setCurrentPage}
           />
+        </OrganicCard>
+
+        {/* Drawer & Popover */}
+        <OrganicCard
+          title={
+            <span className="inline-flex items-center gap-2">
+              <TfiLayoutMenuSeparated className="h-5 w-5" /> Paneles flotantes
+            </span>
+          }
+          className="p-6 space-y-4"
+        >
+          <div className="flex flex-wrap items-center gap-4">
+            <OrganicButton variant="primary" onClick={() => setDrawerOpen(true)} fullWidth={false}>
+              Abrir Drawer
+            </OrganicButton>
+            <OrganicPopover
+              placement="bottom"
+              trigger={
+                <OrganicButton variant="default" fullWidth={false}>
+                  Ver opciones
+                </OrganicButton>
+              }
+            >
+              <div className="space-y-2 text-left">
+                <p className="font-semibold text-[#1e1e1e]">Acciones rápidas</p>
+                <ul className="space-y-1 text-sm">
+                  <li>• Crear tablero</li>
+                  <li>• Importar datos</li>
+                  <li>• Invitar equipo</li>
+                </ul>
+              </div>
+            </OrganicPopover>
+          </div>
+        </OrganicCard>
+
+        {/* Table */}
+        <OrganicCard
+          title={
+            <span className="inline-flex items-center gap-2">
+              <TfiLayoutGrid2 className="h-5 w-5" /> Tabla de equipo
+            </span>
+          }
+          className="p-6"
+        >
+          <OrganicTable
+            columns={[
+              { label: 'Nombre', accessor: 'name' },
+              { label: 'Rol', accessor: 'role' },
+              { label: 'País', accessor: 'country' }
+            ]}
+            data={[
+              { name: 'Ana María', role: 'Diseño', country: 'México' },
+              { name: 'Luis R.', role: 'Frontend', country: 'España' },
+              { name: 'Carolina', role: 'Backend', country: 'Argentina' }
+            ]}
+          />
+        </OrganicCard>
+
+        {/* Stepper */}
+        <OrganicCard
+          title={
+            <span className="inline-flex items-center gap-2">
+              <TfiPulse className="h-5 w-5" /> Progreso del onboarding
+            </span>
+          }
+          className="p-6 space-y-6"
+        >
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+            <OrganicStepper
+              className="flex-1"
+              steps={[{ label: 'Cuenta' }, { label: 'Equipo' }, { label: 'Integraciones' }, { label: 'Lanzamiento' }]}
+              current={activeStep}
+            />
+            <div className="flex w-full flex-col gap-4 lg:w-64">
+              <OrganicStepper
+                variant="circular"
+                steps={[{ label: 'Preparar' }, { label: 'Diseñar' }, { label: 'Publicar' }]}
+                current={Math.min(activeStep, 2)}
+              />
+              <div className="flex items-center justify-end gap-3">
+                <OrganicButton
+                  variant="default"
+                  fullWidth={false}
+                  disabled={activeStep === 0}
+                  onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
+                >
+                  Retroceder
+                </OrganicButton>
+                <OrganicButton
+                  variant="primary"
+                  fullWidth={false}
+                  disabled={activeStep === 3}
+                  onClick={() => setActiveStep((prev) => Math.min(3, prev + 1))}
+                >
+                  Avanzar
+                </OrganicButton>
+              </div>
+            </div>
+          </div>
         </OrganicCard>
 
         {/* Tabs */}
@@ -576,7 +809,11 @@ function AppDemo() {
         </OrganicCard>
 
         {/* Footer */}
-        <OrganicBox className="p-8 text-center">
+        <OrganicBox
+          className="p-8 text-center text-[#1e1e1e]"
+          backgroundColor="#ffffff"
+          strokeColor="#111827"
+        >
           <p className="text-gray-600">
             Hecho con ❤️ usando React + Vite + SVG
           </p>
@@ -641,6 +878,35 @@ function AppDemo() {
           </OrganicButton>
         </div>
       </OrganicModal>
+
+      <OrganicDrawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title="Centro de comandos"
+        size="medium"
+        footer={
+          <div className="flex justify-end gap-3">
+            <OrganicButton variant="default" fullWidth={false} onClick={() => setDrawerOpen(false)}>
+              Cancelar
+            </OrganicButton>
+            <OrganicButton variant="primary" fullWidth={false} onClick={() => setDrawerOpen(false)}>
+              Guardar cambios
+            </OrganicButton>
+          </div>
+        }
+      >
+        <p className="text-sm text-[#1e1e1e]/70 mb-4">
+          El drawer permite mostrar configuraciones avanzadas sin salir del contexto actual.
+        </p>
+        <div className="space-y-3">
+          <label className="block text-sm font-semibold text-[#1e1e1e]">Nombre del panel</label>
+          <OrganicInput placeholder="Centro creativo" />
+        </div>
+        <div className="mt-4 space-y-2">
+          <OrganicCheckbox label="Activar modo colaborativo" />
+          <OrganicCheckbox label="Notificar a mi equipo" />
+        </div>
+      </OrganicDrawer>
     </div>
   );
 }

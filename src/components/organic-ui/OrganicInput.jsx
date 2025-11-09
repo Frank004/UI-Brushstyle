@@ -2,7 +2,7 @@
 // ARCHIVO: src/components/organic-ui/OrganicInput.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateOrganicPath, brushShadows } from './utils';
+import { generateOrganicPath, brushShadows, getFontFamily, getFontSize, getSpacing, getFontWeight } from './utils';
 
 /**
  * OrganicInput - Input con estilo orgánico
@@ -47,7 +47,7 @@ export const OrganicInput = ({
     });
   }, [height]);
 
-  const inputClasses = "relative z-10 w-full h-full px-4 py-3 bg-transparent outline-none text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-base";
+  const inputClasses = "relative z-10 w-full h-full px-4 py-3 bg-transparent outline-none text-gray-800 disabled:cursor-not-allowed disabled:opacity-50";
 
   const containerStyle = {
     height: `${height}px`,
@@ -82,6 +82,12 @@ export const OrganicInput = ({
           rows={rows}
           disabled={disabled}
           className={`${inputClasses} resize-none`}
+          style={{
+            fontFamily: getFontFamily('body'),
+            fontSize: getFontSize('md'),
+            lineHeight: 1.5,
+            fontWeight: getFontWeight('regular')
+          }}
         />
       ) : (
         <input
@@ -94,6 +100,12 @@ export const OrganicInput = ({
           maxLength={maxLength}
           disabled={disabled}
           className={inputClasses}
+          style={{
+            fontFamily: getFontFamily('body'),
+            fontSize: getFontSize('md'),
+            lineHeight: 1.5,
+            fontWeight: getFontWeight('regular')
+          }}
         />
       )}
     </div>

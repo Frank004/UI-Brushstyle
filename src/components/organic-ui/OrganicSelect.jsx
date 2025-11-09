@@ -2,7 +2,7 @@
 // ARCHIVO: src/components/organic-ui/OrganicSelect.jsx
 // ============================================
 import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { generateOrganicPath, brushShadows } from './utils';
+import { generateOrganicPath, brushShadows, getFontFamily, getFontSize, getFontWeight } from './utils';
 
 /**
  * OrganicSelect - Select dropdown con estilo orgánico
@@ -106,7 +106,14 @@ export const OrganicSelect = ({
           />
         </svg>
         <div className="relative z-10 flex items-center justify-between px-4 h-full">
-          <span className={selectedOption ? "text-[#1e1e1e]" : "text-[#6a6a6a]"}>
+          <span
+            className={selectedOption ? "text-[#1e1e1e]" : "text-[#6a6a6a]"}
+            style={{
+              fontFamily: getFontFamily('body'),
+              fontSize: getFontSize('md'),
+              fontWeight: getFontWeight('regular')
+            }}
+          >
             {selectedOption ? selectedOption.label : placeholder}
           </span>
           <svg 
@@ -146,6 +153,11 @@ export const OrganicSelect = ({
                 className={`w-full text-left px-4 py-2 rounded-lg transition-colors hover:bg-[#f5f5f5] text-sm ${
                   option.value === value ? 'bg-[#f5f5f5] font-semibold' : ''
                 }`}
+                style={{
+                  fontFamily: getFontFamily('body'),
+                  fontSize: getFontSize('sm'),
+                  fontWeight: option.value === value ? getFontWeight('semibold') : getFontWeight('regular')
+                }}
               >
                 {option.label}
               </button>

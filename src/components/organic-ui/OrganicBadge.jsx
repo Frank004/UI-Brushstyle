@@ -2,7 +2,7 @@
 // ARCHIVO: src/components/organic-ui/OrganicBadge.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateRegularPath, colorVariants } from './utils';
+import { generateRegularPath, colorVariants, getFontFamily, getFontWeight, getFontSize } from './utils';
 
 /**
  * OrganicBadge - Badge/Etiqueta con estilo orgánico
@@ -29,6 +29,12 @@ export const OrganicBadge = ({
   };
 
   const sizeConfig = sizes[size] || sizes.medium;
+  const fontMap = {
+    small: getFontSize('xs'),
+    medium: getFontSize('sm'),
+    large: getFontSize('md')
+  };
+  const fontSize = fontMap[size] ?? getFontSize('sm');
 
   const pathD = useMemo(() => {
     return generateRegularPath({
@@ -39,11 +45,14 @@ export const OrganicBadge = ({
   }, [sizeConfig.height]);
 
   return (
-    <span 
-      className={`inline-flex items-center justify-center relative ${sizeConfig.px} ${className}`}
-      style={{ height: `${sizeConfig.height}px` }}
+    <span
+      className={`relative inline-flex items-center justify-center text-[#1e1e1e] ${sizeConfig.px} ${className}`}
+      style={{
+        filter: 'drop-shadow(3px 3px 0 rgba(0,0,0,0.05))',
+        height: `${sizeConfig.height}px`
+      }}
     >
-      <svg 
+      <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
         viewBox={`0 0 200 ${sizeConfig.height}`}
         preserveAspectRatio="none"
@@ -57,9 +66,15 @@ export const OrganicBadge = ({
           strokeLinejoin="round"
         />
       </svg>
-      <span 
-        className={`relative z-10 font-semibold whitespace-nowrap ${sizeConfig.text}`}
-        style={{ color: color.text }}
+      <span
+        className={`relative z-10 whitespace-nowrap ${sizeConfig.text}`}
+        style={{
+          color: color.text,
+          fontFamily: getFontFamily('body'),
+          fontWeight: getFontWeight('semibold'),
+          fontSize,
+          lineHeight: 1.2
+        }}
       >
         {children}
       </span>
@@ -86,8 +101,8 @@ export const OrganicBadgeCount = ({
   if (count === 0) return null;
 
   return (
-    <OrganicBadge 
-      variant={variant} 
+    <OrganicBadge
+      variant={variant}
       size="small"
       className={className}
     >

@@ -228,3 +228,5 @@ export const brushShadows = {
   medium: 'drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.08))'
 };
 
+export { spacingTokens, typographyTokens, getSpacing, getFontFamily, getFontSize, getFontWeight } from './theme';
+

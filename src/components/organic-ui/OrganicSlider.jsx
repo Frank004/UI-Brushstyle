@@ -32,7 +32,9 @@ export const OrganicSlider = ({
   onChange,
   label,
   showValue = true,
-  className = ''
+  className = '',
+  accentColor = '#2563eb',
+  baseColor = '#e5e7eb'
 }) => {
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue);
@@ -69,7 +71,7 @@ export const OrganicSlider = ({
   }, [percent, pathLength]);
 
   const clipWidth = Math.max(0, Math.min(100, percent * 100));
-  const clipId = useMemo(() => `slider-clip-${Math.random().toString(36).slice(2)}`, []);
+  const clipId = useMemo(() => `slider-clip-${Math.abs(seed).toString(36)}-${label ?? 'slider'}`, [seed, label]);
 
   return (
     <div
@@ -97,7 +99,7 @@ export const OrganicSlider = ({
             ref={pathRef}
             d={pathD}
             fill="none"
-            stroke="#e5e7eb"
+            stroke={baseColor}
             strokeWidth={6}
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
@@ -105,7 +107,7 @@ export const OrganicSlider = ({
           <path
             d={pathD}
             fill="none"
-            stroke="#2563eb"
+            stroke={accentColor}
             strokeWidth={8}
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
@@ -121,8 +123,8 @@ export const OrganicSlider = ({
             style={{
               top: `${knobPos.y}%`,
               left: `${knobPos.x}%`,
-              border: '4px solid #2563eb',
-              boxShadow: '4px 4px 0 rgba(37, 99, 235, 0.25)'
+              border: `4px solid ${accentColor}`,
+              boxShadow: `4px 4px 0 ${accentColor}40`
             }}
           />
         </div>

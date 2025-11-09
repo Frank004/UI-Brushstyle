@@ -2,7 +2,7 @@
 // ARCHIVO: src/components/organic-ui/OrganicButton.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateOrganicPath, colorVariants, sizeConfigs, brushShadows } from './utils';
+import { generateOrganicPath, colorVariants, sizeConfigs, brushShadows, getFontFamily, getFontWeight } from './utils';
 
 /**
  * OrganicButton - Botón con estilo orgánico
@@ -59,7 +59,13 @@ export const OrganicButton = ({
       onClick={onClick}
       disabled={disabled}
       className={`relative transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${fullWidth ? 'w-full' : 'inline-flex'} ${sizeConfig.px} ${className}`}
-      style={{ height: sizeConfig.height, filter: brushShadows.soft, ...style }}
+      style={{
+        height: sizeConfig.height,
+        filter: brushShadows.soft,
+        fontFamily: getFontFamily('body'),
+        fontWeight: getFontWeight('semibold'),
+        ...style
+      }}
     >
       <svg 
         className="absolute inset-0 w-full h-full pointer-events-none"

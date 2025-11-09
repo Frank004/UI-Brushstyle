@@ -1,6 +1,7 @@
 import React from 'react';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
+import { getFontFamily, getFontWeight, getSpacing } from './utils';
 
 const renderActionButton = (action, variant = 'primary', extraClass = '') => {
   if (!action) return null;
@@ -9,7 +10,8 @@ const renderActionButton = (action, variant = 'primary', extraClass = '') => {
       variant={variant}
       size="small"
       onClick={action.onClick}
-      className={extraClass}
+      className={`whitespace-nowrap ${extraClass}`.trim()}
+      fullWidth={false}
     >
       {action.label}
     </OrganicButton>
@@ -34,7 +36,14 @@ export const OrganicNavbar = ({
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center justify-between gap-4">
-          <div className="text-xl font-semibold text-[#1e1e1e] flex items-center gap-2">
+          <div
+            className="text-[#1e1e1e] flex items-center gap-2"
+            style={{
+              fontFamily: getFontFamily('display'),
+              fontWeight: getFontWeight('bold'),
+              fontSize: '1.5rem'
+            }}
+          >
             {brand}
           </div>
           {(actions?.primary || actions?.secondary) && (
@@ -50,6 +59,7 @@ export const OrganicNavbar = ({
               key={link.label}
               href={link.href ?? '#'}
               className="hover:text-[#1e1e1e] transition-colors"
+              style={{ fontFamily: getFontFamily('body') }}
             >
               {link.label}
             </a>

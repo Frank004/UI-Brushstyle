@@ -4,6 +4,7 @@
 import React, { useEffect } from 'react';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
+import { getFontFamily, getFontWeight, getFontSize } from './utils';
 
 /**
  * OrganicModal - Modal/Dialog con estilo orgánico
@@ -88,22 +89,17 @@ export const OrganicModal = ({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="flex-shrink-0 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full transition-colors hover:bg-gray-100"
                 aria-label="Cerrar modal"
+                style={{
+                  fontFamily: getFontFamily('display'),
+                  fontWeight: getFontWeight('bold'),
+                  fontSize: getFontSize('xl'),
+                  lineHeight: 1,
+                  color: '#111827'
+                }}
               >
-                <svg 
-                  className="w-6 h-6" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M6 18L18 6M6 6l12 12" 
-                  />
-                </svg>
+                ×
               </button>
             )}
           </div>

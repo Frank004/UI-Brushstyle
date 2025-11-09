@@ -3,6 +3,7 @@
 // ============================================
 import React from 'react';
 import { OrganicBox } from './OrganicBox';
+import { getSpacing, getFontFamily, getFontSize, getFontWeight } from './utils';
 
 /**
  * OrganicCard - Tarjeta con estilo orgánico
@@ -36,11 +37,22 @@ export const OrganicCard = ({
       backgroundColor={backgroundColor}
     >
       {title && (
-        <h3 className={`text-xl font-bold mb-4 ${headerClassName}`}>
+        <h3
+          className={headerClassName}
+          style={{
+            fontFamily: getFontFamily('display'),
+            fontSize: getFontSize('title', '1.75rem'),
+            fontWeight: getFontWeight('bold'),
+            marginBottom: getSpacing('md', '1rem')
+          }}
+        >
           {title}
         </h3>
       )}
-      <div className={bodyClassName}>
+      <div
+        className={bodyClassName}
+        style={{ fontFamily: getFontFamily('body') }}
+      >
         {children}
       </div>
     </OrganicBox>

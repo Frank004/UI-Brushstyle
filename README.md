@@ -40,6 +40,55 @@ function Example() {
 }
 ```
 
+## Design Tokens
+
+UI Brushstyle expone tokens reutilizables desde `@brushstyle/organic-ui`. Úsalos para mantener spacing y tipografías consistentes:
+
+```jsx
+import { spacingTokens, typographyTokens, getSpacing, getFontFamily } from '@brushstyle/organic-ui';
+
+const Section = ({ children }) => (
+  <section style={{ padding: getSpacing('section'), fontFamily: getFontFamily('body') }}>
+    {children}
+  </section>
+);
+```
+
+- **Spacing:** `spacingTokens.container`, `spacingTokens.section`, etc.
+- **Tipografía:** `typographyTokens.fonts.body`, `typographyTokens.fonts.display`, tamaños como `typographyTokens.sizes.title`.
+
+## Theme Provider
+
+La librería expone un `ThemeProvider` con un contexto para cambiar entre temas claro/oscuro.
+
+```jsx
+import { ThemeProvider, useTheme } from '@brushstyle/organic-ui';
+
+function Layout() {
+  const { theme, toggleTheme, tokens } = useTheme();
+  return (
+    <div style={{ background: tokens.palette.background, color: tokens.palette.text }}>
+      <button onClick={toggleTheme}>
+        Cambiar a {theme === 'light' ? 'modo oscuro' : 'modo claro'}
+      </button>
+      {/* resto de la UI */}
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <Layout />
+    </ThemeProvider>
+  );
+}
+```
+
+Internamente el provider usa **Context API** + **useState** para gestionar el tema y aplica los tokens (colores, sombras, fuentes) al árbol mediante CSS variables.
+
+---
+
 ## Componentes incluidos
 
 | Categoría | Componentes |

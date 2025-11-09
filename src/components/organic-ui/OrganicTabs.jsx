@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
-import { brushShadows, stringToSeed } from './utils';
+import { brushShadows, stringToSeed, getFontFamily, getFontWeight } from './utils';
 
 const generateOrganicLine = ({ segments = 6, amplitude = 12, seed = 1 }) => {
   const width = 100;
@@ -98,6 +98,7 @@ export const OrganicTabs = ({
                 className={`relative pb-3 transition-colors duration-200 ${
                   isActive ? 'text-[#1e1e1e]' : 'hover:text-[#1e1e1e]/80'
                 }`}
+                style={{ fontFamily: getFontFamily('display'), fontWeight: getFontWeight(isActive ? 'bold' : 'medium') }}
               >
                 <span className="block font-semibold">{tab.label}</span>
                 {isActive && linePath && (

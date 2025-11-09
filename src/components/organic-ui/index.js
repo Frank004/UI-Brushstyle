@@ -36,4 +36,11 @@ export { OrganicTabs } from './OrganicTabs';
 export { OrganicFileUpload } from './OrganicFileUpload';
 export { OrganicSlider } from './OrganicSlider';
 export { OrganicPagination } from './OrganicPagination';
+export { OrganicDrawer } from './OrganicDrawer';
+export { OrganicPopover } from './OrganicPopover';
+export { OrganicTable } from './OrganicTable';
+export { OrganicStepper } from './OrganicStepper';
+export { OrganicDivider } from './OrganicDivider';
+export { ThemeProvider, useTheme } from './ThemeProvider';
+export { spacingTokens, typographyTokens, getSpacing, getFontFamily, getFontSize, getFontWeight, themeVariants, applyThemeVariant } from './theme';
 

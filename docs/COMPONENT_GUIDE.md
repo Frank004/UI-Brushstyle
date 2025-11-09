@@ -2,6 +2,30 @@
 
 Guía rápida con propiedades ajustables y ejemplos para cada componente del kit Brushstyle.
 
+## Design Tokens
+
+| Categoría | Tokens | Descripción |
+| --- | --- | --- |
+| Spacing | `spacingTokens` (`xs`, `sm`, `md`, `lg`, `xl`, `container`, `section`, `gap`) | Escala de espacio utilizada en paddings, gaps y contenedores. Ejemplo: `getSpacing('container')` devuelve `clamp(1.25rem, 4vw, 2.75rem)`. |
+| Tipografía | `typographyTokens.fonts` (`body`, `display`, `mono`), `typographyTokens.sizes`, `typographyTokens.weights`, `typographyTokens.lineHeights` | Controlan familia, tamaños y pesos de fuente. Se consumen con `getFontFamily`, `getFontSize`, `getFontWeight`. |
+| Tema | `ThemeProvider`, `useTheme`, `themeVariants` | Contexto para alternar entre temas (light/dark). Cambia gradientes, colores de superficie y acento usando `useTheme`. |
+
+```jsx
+import { spacingTokens, typographyTokens, getSpacing, getFontFamily } from '@brushstyle/organic-ui';
+
+const CardTitle = () => (
+  <h2 style={{
+    fontFamily: getFontFamily('display'),
+    fontSize: typographyTokens.sizes.title,
+    marginBottom: getSpacing('md')
+  }}>
+    Título orgánico
+  </h2>
+);
+```
+
+---
+
 ## Tabla general de componentes
 
 | Componente | Descripción corta |
@@ -519,6 +543,8 @@ const tabs = [
 | `step` | `number` | `1` | Incrementos del slider. |
 | `label` | `string` | `undefined` | Etiqueta superior. |
 | `showValue` | `boolean` | `true` | Muestra el valor actual. |
+| `accentColor` | `string` | `#2563eb` | Color del trazo activo y knob. |
+| `baseColor` | `string` | `#e5e7eb` | Color del trazo base. |
 | `onChange` | `function` | `undefined` | Callback al cambiar el valor. |
 
 ```jsx
@@ -526,8 +552,13 @@ const tabs = [
 const [volume, setVolume] = useState(40);
 <OrganicSlider label="Volumen" value={volume} onChange={setVolume} />
 
-// Ejemplo 2: Slider no controlado con step personalizado
-<OrganicSlider defaultValue={25} step={5} min={0} max={50} showValue={false} />
+// Ejemplo 2: Slider con paleta personalizada
+<OrganicSlider
+  label="Temperatura"
+  defaultValue={30}
+  accentColor="#f97316"
+  baseColor="#fde68a"
+/>
 ```
 
 ---
@@ -553,6 +584,140 @@ const [page, setPage] = useState(2);
   siblingCount={2}
   onPageChange={setPage}
 />
+```
+
+---
+
+## OrganicDrawer
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `isOpen` | `boolean` | `false` | Controla visibilidad del panel. |
+| `onClose` | `function` | `undefined` | Callback para cerrar. |
+| `position` | `string` | `"right"` | `right` o `left`. |
+| `size` | `string` | `"medium"` | `small`, `medium`, `large`. |
+| `title` | `ReactNode` | `undefined` | Encabezado del drawer. |
+| `footer` | `ReactNode` | `undefined` | Acciones inferiores. |
+| `blurOverlay` | `boolean` | `true` | Aplica blur al overlay. |
+
+```jsx
+const [open, setOpen] = useState(false);
+<>
+  <OrganicButton onClick={() => setOpen(true)}>Configuraciones</OrganicButton>
+  <OrganicDrawer
+    isOpen={open}
+    onClose={() => setOpen(false)}
+    title="Centro de comandos"
+    footer={
+      <div className="flex justify-end gap-3">
+        <OrganicButton variant="default" fullWidth={false} onClick={() => setOpen(false)}>
+          Cancelar
+        </OrganicButton>
+        <OrganicButton variant="primary" fullWidth={false}>Guardar</OrganicButton>
+      </div>
+    }
+  >
+    <p className="text-sm">Configura tu espacio de trabajo sin salir de la vista actual.</p>
+  </OrganicDrawer>
+</>
+```
+
+---
+
+## OrganicPopover
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `trigger` | `ReactElement` | `undefined` | Elemento que abre el popover (se clona y recibe `onClick`). |
+| `children` | `ReactNode` | `undefined` | Contenido del popover. |
+| `placement` | `string` | `"top"` | `top`, `bottom`, `left`, `right`. |
+| `open` | `boolean` | `undefined` | Control externo (opcional). |
+| `onOpenChange` | `function` | `undefined` | Notifica cambios de estado. |
+| `width` | `number` | `260` | Ancho del popover. |
+
+```jsx
+<OrganicPopover
+  placement="bottom"
+  trigger={<OrganicButton fullWidth={false}>Opciones</OrganicButton>}
+>
+  <div className="space-y-1 text-sm">
+    <p className="font-semibold">Acciones rápidas</p>
+    <p>• Crear tablero</p>
+    <p>• Importar datos</p>
+  </div>
+</OrganicPopover>
+```
+
+---
+
+## OrganicTable
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `columns` | `{ label, accessor }[]` | `[]` | Definición de columnas. |
+| `data` | `object[]` | `[]` | Filas de datos. |
+| `renderRow` | `function` | `undefined` | Render personalizado por fila. |
+| `strokeWidth` | `number` | `5` | Grosor del borde del contenedor. |
+
+```jsx
+<OrganicTable
+  columns={[
+    { label: 'Nombre', accessor: 'name' },
+    { label: 'Rol', accessor: 'role' }
+  ]}
+  data={[
+    { name: 'Ana', role: 'Diseño' },
+    { name: 'Luis', role: 'Frontend' }
+  ]}
+/>
+```
+
+---
+
+## OrganicStepper
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `steps` | `{ label }[]` | `[]` | Secuencia de etapas. |
+| `current` | `number` | `0` | Índice del paso activo. |
+| `variant` | `string` | `"linear"` | `linear` o `circular`. |
+
+```jsx
+const [step, setStep] = useState(1);
+<OrganicStepper
+  steps={[{ label: 'Cuenta' }, { label: 'Equipo' }, { label: 'Lanzamiento' }]}
+  current={step}
+/>
+
+<OrganicStepper
+  variant="circular"
+  steps={[{ label: 'Preparar' }, { label: 'Diseñar' }, { label: 'Publicar' }]}
+  current={step}
+/>
+```
+
+---
+
+## OrganicDivider
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `orientation` | `string` | `"horizontal"` | `horizontal` o `vertical`. |
+| `color` | `string` | `#1e1e1e` | Color del trazo. |
+| `thickness` | `number` | `6` | Grosor del stroke. |
+| `length` | `string` | `"100%"` | Longitud del contenedor (puede ser `px`, `%`, etc.). |
+| `className` | `string` | `""` | Clases adicionales. |
+
+```jsx
+// Ejemplo 1: Divisor horizontal
+<OrganicDivider thickness={5} color="#0f172a" className="my-6" />
+
+// Ejemplo 2: Divisor vertical dentro de un grid
+<div className="flex items-center gap-4">
+  <p>Panel A</p>
+  <OrganicDivider orientation="vertical" length="80px" color="#2563eb" />
+  <p>Panel B</p>
+</div>
 ```
 
 ---

@@ -1,11 +1,10 @@
 import React from 'react';
 import { OrganicBox } from './OrganicBox';
-import { brushShadows } from './utils';
+import { brushShadows, getFontFamily, getFontWeight, getFontSize } from './utils';
 import {
   TfiInfoAlt,
   TfiCheck,
   TfiAlert,
-  TfiClose,
   TfiAnnouncement
 } from 'react-icons/tfi';
 
@@ -76,9 +75,27 @@ export const OrganicAlert = ({
           <Icon className="h-4 w-4" />
         </span>
         <div className="flex-1 space-y-1">
-          {title && <p className="font-semibold text-[#1e1e1e] text-base">{title}</p>}
+          {title && (
+            <p
+              style={{
+                fontFamily: getFontFamily('body'),
+                fontWeight: getFontWeight('semibold'),
+                fontSize: getFontSize('lg')
+              }}
+              className="text-[#1e1e1e]"
+            >
+              {title}
+            </p>
+          )}
           {description && (
-            <p className={`text-sm text-[#1e1e1e]/80 ${compact ? 'leading-snug' : 'leading-relaxed'}`}>
+            <p
+              className={`${compact ? 'leading-snug' : 'leading-relaxed'} text-[#1e1e1e]/80`}
+              style={{
+                fontFamily: getFontFamily('body'),
+                fontSize: getFontSize('sm'),
+                fontWeight: getFontWeight('regular')
+              }}
+            >
               {description}
             </p>
           )}
@@ -88,10 +105,17 @@ export const OrganicAlert = ({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#1e1e1e]/70 hover:text-[#1e1e1e] transition"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition hover:bg-white/50"
             aria-label="Cerrar alerta"
+            style={{
+              fontFamily: getFontFamily('display'),
+              fontWeight: getFontWeight('bold'),
+              fontSize: getFontSize('xl'),
+              color: styles.stroke,
+              lineHeight: 1
+            }}
           >
-            <TfiClose className="h-4 w-4" />
+            ×
           </button>
         )}
       </div>
