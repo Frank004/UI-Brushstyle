@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { brushShadows, stringToSeed } from './utils';
+import { stringToSeed, getColor, organicSeeds } from './utils';
 
 const generateOrganicLine = ({ segments = 8, amplitude = 12, seed = 7 }) => {
   const width = 100;
@@ -33,8 +33,8 @@ export const OrganicSlider = ({
   label,
   showValue = true,
   className = '',
-  accentColor = '#2563eb',
-  baseColor = '#e5e7eb'
+  accentColor,
+  baseColor
 }) => {
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue);
@@ -50,7 +50,14 @@ export const OrganicSlider = ({
 
   const percent = ((currentValue - min) / (max - min)) || 0;
 
-  const seed = useMemo(() => stringToSeed(label || 'slider'), [label]);
+  const resolvedAccent = accentColor ?? getColor('accent');
+  const resolvedBase = baseColor ?? getColor('borderMuted');
+  const textColor = getColor('surfaceText');
+  const textMuted = getColor('surfaceTextMuted');
+  const textSubtle = getColor('surfaceTextSubtle');
+  const surfaceColor = getColor('surface');
+
+  const seed = useMemo(() => (label ? stringToSeed(label) : organicSeeds.sliderLine), [label]);
   const pathD = useMemo(() => generateOrganicLine({ amplitude: 10, segments: 10, seed }), [seed]);
   const pathRef = useRef(null);
   const [pathLength, setPathLength] = useState(0);
@@ -75,13 +82,17 @@ export const OrganicSlider = ({
 
   return (
     <div
-      className={`relative w-full rounded-3xl bg-white ${className}`}
-      style={{ padding: 'clamp(1rem, 3vw, 2rem)' }}
+      className={`relative w-full rounded-3xl ${className}`}
+      style={{
+        padding: 'clamp(1rem, 3vw, 2rem)',
+        backgroundColor: surfaceColor,
+        color: textColor
+      }}
     >
       {label && (
-        <div className="mb-3 flex items-center justify-between text-sm font-semibold text-[#1e1e1e]">
+        <div className="mb-3 flex items-center justify-between text-sm font-semibold" style={{ color: textColor }}>
           <span>{label}</span>
-          {showValue && <span className="text-[#1e1e1e]/70">{currentValue}</span>}
+          {showValue && <span style={{ color: textMuted }}>{currentValue}</span>}
         </div>
       )}
       <div className="relative">
@@ -99,7 +110,7 @@ export const OrganicSlider = ({
             ref={pathRef}
             d={pathD}
             fill="none"
-            stroke={baseColor}
+            stroke={resolvedBase}
             strokeWidth={6}
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
@@ -107,7 +118,7 @@ export const OrganicSlider = ({
           <path
             d={pathD}
             fill="none"
-            stroke={accentColor}
+            stroke={resolvedAccent}
             strokeWidth={8}
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
@@ -119,13 +130,16 @@ export const OrganicSlider = ({
           style={{ transform: 'translateY(-2px)' }}
         >
           <div
-            className="absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md"
-            style={{
-              top: `${knobPos.y}%`,
-              left: `${knobPos.x}%`,
-              border: `4px solid ${accentColor}`,
-              boxShadow: `4px 4px 0 ${accentColor}40`
-            }}
+            className="absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-md"
+            style={
+              {
+                top: `${knobPos.y}%`,
+                left: `${knobPos.x}%`,
+                border: `4px solid ${resolvedAccent}`,
+                boxShadow: `4px 4px 0 color-mix(in srgb, ${resolvedAccent} 30%, transparent)`,
+                backgroundColor: surfaceColor
+              }
+            }
           />
         </div>
         <input
@@ -138,7 +152,7 @@ export const OrganicSlider = ({
           className="organic-slider-range absolute inset-0 w-full"
         />
       </div>
-      <div className="mt-3 flex justify-between text-xs text-[#1e1e1e]/50">
+      <div className="mt-3 flex justify-between text-xs" style={{ color: textSubtle }}>
         <span>{min}</span>
         <span>{max}</span>
       </div>

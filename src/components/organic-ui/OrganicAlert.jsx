@@ -1,6 +1,6 @@
 import React from 'react';
 import { OrganicBox } from './OrganicBox';
-import { brushShadows, getFontFamily, getFontWeight, getFontSize } from './utils';
+import { brushShadows, getFontFamily, getFontWeight, getFontSize, getColor } from './utils';
 import {
   TfiInfoAlt,
   TfiCheck,
@@ -57,6 +57,8 @@ export const OrganicAlert = ({
 }) => {
   const styles = variantStyles[variant] || variantStyles.info;
   const Icon = icon || variantIcons[variant] || TfiInfoAlt;
+  const textColor = getColor('surfaceText');
+  const textMuted = getColor('surfaceTextMuted');
 
   return (
     <OrganicBox
@@ -80,20 +82,21 @@ export const OrganicAlert = ({
               style={{
                 fontFamily: getFontFamily('body'),
                 fontWeight: getFontWeight('semibold'),
-                fontSize: getFontSize('lg')
+                fontSize: getFontSize('lg'),
+                color: textColor
               }}
-              className="text-[#1e1e1e]"
             >
               {title}
             </p>
           )}
           {description && (
             <p
-              className={`${compact ? 'leading-snug' : 'leading-relaxed'} text-[#1e1e1e]/80`}
               style={{
                 fontFamily: getFontFamily('body'),
                 fontSize: getFontSize('sm'),
-                fontWeight: getFontWeight('regular')
+                fontWeight: getFontWeight('regular'),
+                color: textMuted,
+                lineHeight: compact ? 1.35 : 1.6
               }}
             >
               {description}

@@ -2,7 +2,10 @@
 // ARCHIVO: src/components/organic-ui/OrganicSelect.jsx
 // ============================================
 import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { generateOrganicPath, brushShadows, getFontFamily, getFontSize, getFontWeight } from './utils';
+import { generateOrganicPath, brushShadows, getFontFamily, getFontSize, getFontWeight, getColor, organicShapePresets, organicSeeds } from './utils';
+
+const SELECT_TRIGGER_PRESET = organicShapePresets.selectTrigger;
+const SELECT_MENU_PRESET = organicShapePresets.selectMenu;
 
 /**
  * OrganicSelect - Select dropdown con estilo orgánico
@@ -36,21 +39,21 @@ export const OrganicSelect = ({
 
   const pathD = useMemo(() => {
     return generateOrganicPath({
-      width: 600,
+      width: SELECT_TRIGGER_PRESET.width,
       height: 40,
-      cornerRadius: 12,
-      wobbleIntensity: 7,
-      seed: 11111
+      cornerRadius: SELECT_TRIGGER_PRESET.cornerRadius,
+      wobbleIntensity: SELECT_TRIGGER_PRESET.wobble,
+      seed: organicSeeds.selectTrigger
     });
   }, []);
 
   const dropdownPathD = useMemo(() => {
     return generateOrganicPath({
-      width: 600,
+      width: SELECT_MENU_PRESET.width,
       height: Math.min(options.length * 36 + 12, 250),
-      cornerRadius: 12,
-      wobbleIntensity: 7,
-      seed: 22222
+      cornerRadius: SELECT_MENU_PRESET.cornerRadius,
+      wobbleIntensity: SELECT_MENU_PRESET.wobble,
+      seed: organicSeeds.selectMenu
     });
   }, [options.length]);
 
@@ -77,6 +80,12 @@ export const OrganicSelect = ({
   };
 
   const dropdownHeight = Math.min(options.length * 36 + 12, 250);
+  const surface = getColor('surface');
+  const border = getColor('border');
+  const text = getColor('surfaceText');
+  const textMuted = getColor('textMuted');
+  const textSubtle = getColor('textSubtle');
+  const surfaceActive = getColor('surfaceActive');
 
   return (
     <div
@@ -93,13 +102,13 @@ export const OrganicSelect = ({
       >
         <svg 
           className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox="0 0 600 40"
+          viewBox={`0 0 ${SELECT_TRIGGER_PRESET.width} 40`}
           preserveAspectRatio="none"
         >
           <path
             d={pathD}
-            fill="white"
-            stroke="black"
+            fill={surface}
+            stroke={border}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -107,11 +116,11 @@ export const OrganicSelect = ({
         </svg>
         <div className="relative z-10 flex items-center justify-between px-4 h-full">
           <span
-            className={selectedOption ? "text-[#1e1e1e]" : "text-[#6a6a6a]"}
             style={{
               fontFamily: getFontFamily('body'),
               fontSize: getFontSize('md'),
-              fontWeight: getFontWeight('regular')
+              fontWeight: getFontWeight('regular'),
+              color: selectedOption ? text : textSubtle
             }}
           >
             {selectedOption ? selectedOption.label : placeholder}
@@ -132,13 +141,13 @@ export const OrganicSelect = ({
         <div className="absolute left-0 right-0 mt-2 z-[70]">
           <svg 
             className="absolute inset-0 w-full h-full pointer-events-none"
-            viewBox={`0 0 600 ${dropdownHeight}`}
+            viewBox={`0 0 ${SELECT_MENU_PRESET.width} ${dropdownHeight}`}
             preserveAspectRatio="none"
           >
             <path
               d={dropdownPathD}
-              fill="white"
-              stroke="black"
+              fill={surface}
+              stroke={border}
               strokeWidth={strokeWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -150,13 +159,14 @@ export const OrganicSelect = ({
                 key={option.value}
                 type="button"
                 onClick={() => handleSelect(option)}
-                className={`w-full text-left px-4 py-2 rounded-lg transition-colors hover:bg-[#f5f5f5] text-sm ${
-                  option.value === value ? 'bg-[#f5f5f5] font-semibold' : ''
+                className={`w-full text-left px-4 py-2 rounded-lg transition-colors text-sm ${
+                  option.value === value ? 'bg-surface-active font-semibold' : 'hover-bg-surface-active'
                 }`}
                 style={{
                   fontFamily: getFontFamily('body'),
                   fontSize: getFontSize('sm'),
-                  fontWeight: option.value === value ? getFontWeight('semibold') : getFontWeight('regular')
+                  fontWeight: option.value === value ? getFontWeight('semibold') : getFontWeight('regular'),
+                  color: text
                 }}
               >
                 {option.label}

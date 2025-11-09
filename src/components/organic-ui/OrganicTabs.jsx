@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
-import { brushShadows, stringToSeed, getFontFamily, getFontWeight } from './utils';
+import { stringToSeed, getFontFamily, getFontWeight, getColor, organicSeeds } from './utils';
 
 const generateOrganicLine = ({ segments = 6, amplitude = 12, seed = 1 }) => {
   const width = 100;
@@ -52,7 +52,7 @@ export const OrganicTabs = ({
               variant={tab.value === active ? 'primary' : 'default'}
               strokeWidth={tab.value === active ? 6 : 4}
               onClick={() => handleSelect(tab.value)}
-              className={`min-w-[120px] ${tab.value === active ? '' : 'bg-white'}`}
+              className="min-w-[120px]"
             >
               {tab.label}
             </OrganicButton>
@@ -60,14 +60,14 @@ export const OrganicTabs = ({
         </div>
         <div className="mt-4">
           {activeTab?.content || (
-            <p className="text-sm text-[#1e1e1e]/70">Selecciona una pestaña para ver el contenido.</p>
+            <p className="text-sm" style={{ color: getColor('surfaceTextMuted') }}>Selecciona una pestaña para ver el contenido.</p>
           )}
         </div>
       </OrganicBox>
     );
   }
 
-  const baseLinePath = useMemo(() => generateOrganicLine({ amplitude: 8, seed: 42 }), []);
+  const baseLinePath = useMemo(() => generateOrganicLine({ amplitude: 8, seed: organicSeeds.tabsLine }), []);
   const linePaths = useMemo(() => {
     const result = {};
     tabs.forEach((tab, index) => {
@@ -79,14 +79,25 @@ export const OrganicTabs = ({
 
   const activeStrokeWidth = 7;
   const baseStrokeWidth = 5;
+  const surface = getColor('surface');
+  const borderMuted = getColor('borderMuted');
+  const accent = getColor('accent');
+  const text = getColor('surfaceText');
+  const textMuted = getColor('surfaceTextMuted');
 
   return (
     <div
-      className={`relative rounded-3xl bg-white ${className}`}
-      style={{  padding: 'clamp(1rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.5rem)' }}
+      className={`relative rounded-3xl ${className}`}
+      style={{
+        padding: 'clamp(1rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.5rem)',
+        backgroundColor: surface
+      }}
     >
       <div className="relative pb-6">
-        <div className="flex flex-wrap gap-8 text-sm uppercase tracking-[0.18em] text-[#1e1e1e]/60">
+        <div
+          className="flex flex-wrap gap-8 text-sm uppercase tracking-[0.18em]"
+          style={{ color: textMuted }}
+        >
           {tabs.map((tab) => {
             const isActive = tab.value === active;
             const linePath = linePaths[tab.value];
@@ -95,10 +106,12 @@ export const OrganicTabs = ({
                 key={tab.value}
                 type="button"
                 onClick={() => handleSelect(tab.value)}
-                className={`relative pb-3 transition-colors duration-200 ${
-                  isActive ? 'text-[#1e1e1e]' : 'hover:text-[#1e1e1e]/80'
-                }`}
-                style={{ fontFamily: getFontFamily('display'), fontWeight: getFontWeight(isActive ? 'bold' : 'medium') }}
+                className="relative pb-3 transition-colors duration-200"
+                style={{
+                  fontFamily: getFontFamily('display'),
+                  fontWeight: getFontWeight(isActive ? 'bold' : 'medium'),
+                  color: isActive ? text : textMuted
+                }}
               >
                 <span className="block font-semibold">{tab.label}</span>
                 {isActive && linePath && (
@@ -110,7 +123,7 @@ export const OrganicTabs = ({
                     <path
                       d={linePath}
                       fill="none"
-                      stroke="#ef4444"
+                      stroke={accent}
                       strokeWidth={activeStrokeWidth}
                       strokeLinecap="round"
                       vectorEffect="non-scaling-stroke"
@@ -129,7 +142,7 @@ export const OrganicTabs = ({
           <path
             d={baseLinePath}
             fill="none"
-            stroke="#e5e7eb"
+            stroke={borderMuted}
             strokeWidth={baseStrokeWidth}
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
@@ -138,7 +151,7 @@ export const OrganicTabs = ({
       </div>
       <div className="mt-4">
         {activeTab?.content || (
-          <p className="text-sm text-[#1e1e1e]/70">Selecciona una pestaña para ver el contenido.</p>
+          <p className="text-sm" style={{ color: textMuted }}>Selecciona una pestaña para ver el contenido.</p>
         )}
       </div>
     </div>

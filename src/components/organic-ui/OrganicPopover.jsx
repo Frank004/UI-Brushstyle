@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { generateOrganicPath } from './utils';
+import { generateOrganicPath, getColor } from './utils';
 import { OrganicBox } from './OrganicBox';
 
 const POINTER_OFFSET = 18;
@@ -104,6 +104,9 @@ export const OrganicPopover = ({
     }
   }, [placement]);
 
+  const surface = getColor('surface');
+  const border = getColor('border');
+
   return (
     <>
       <span ref={triggerRef} onClick={toggle} className="inline-flex">
@@ -118,20 +121,20 @@ export const OrganicPopover = ({
           >
             <div className="relative">
               <OrganicBox
-                className="p-6 text-sm text-[#1e1e1e]/80"
+                className="p-6 text-sm"
                 strokeWidth={strokeWidth}
                 cornerRadius={14}
                 wobbleIntensity={3}
-                backgroundColor="#ffffff"
-                strokeColor="#111827"
+                backgroundColor={surface}
+                strokeColor={border}
               >
                 {children}
               </OrganicBox>
               <svg className={`${pointerClass} h-7 w-14 pointer-events-none`} viewBox="0 0 60 30" preserveAspectRatio="none">
                 <path
                   d={pointerPath}
-                  fill="#ffffff"
-                  stroke="#111827"
+                  fill={surface}
+                  stroke={border}
                   strokeWidth={strokeWidth}
                   vectorEffect="non-scaling-stroke"
                 />

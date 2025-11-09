@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { stringToSeed } from './utils';
+import { stringToSeed, getColor, organicSeeds, colorVariants } from './utils';
 
 const generateBrushPath = (segments, seed) => {
   const width = 100;
@@ -32,9 +32,18 @@ export const OrganicStepper = ({
     const radius = 60;
     const circumference = 2 * Math.PI * radius;
     const progress = Math.min(1, Math.max(0, current / Math.max(steps.length - 1, 1)));
+    const surface = getColor('surface');
+    const borderMuted = getColor('borderMuted');
+    const accent = getColor('accent');
+    const text = getColor('surfaceText');
+    const textMuted = getColor('surfaceTextMuted');
+    const textSubtle = getColor('surfaceTextSubtle');
 
     return (
-      <div className={`flex flex-col items-center gap-3 rounded-3xl bg-white px-8 py-6 ${className}`}>
+      <div
+        className={`flex flex-col items-center gap-3 rounded-3xl px-8 py-6 ${className}`}
+        style={{ backgroundColor: surface }}
+      >
         <div className="relative">
           <svg width="160" height="160" viewBox="0 0 160 160">
             <circle
@@ -42,7 +51,7 @@ export const OrganicStepper = ({
               cy="80"
               r={radius}
               fill="none"
-              stroke="#e5e7eb"
+              stroke={borderMuted}
               strokeWidth="10"
               strokeLinecap="round"
             />
@@ -51,7 +60,7 @@ export const OrganicStepper = ({
               cy="80"
               r={radius}
               fill="none"
-              stroke="#2563eb"
+              stroke={accent}
               strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={circumference}
@@ -60,13 +69,13 @@ export const OrganicStepper = ({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 text-center">
-            <p className="text-[11px] uppercase tracking-[0.35em] text-[#1e1e1e]/50">Paso</p>
-            <p className="text-4xl font-bold leading-none text-[#1e1e1e]">{current + 1}</p>
-            <p className="text-xs text-[#1e1e1e]/60">de {steps.length}</p>
+            <p className="text-[11px] uppercase tracking-[0.35em]" style={{ color: textSubtle }}>Paso</p>
+            <p className="text-4xl font-bold leading-none" style={{ color: text }}>{current + 1}</p>
+            <p className="text-xs" style={{ color: textMuted }}>de {steps.length}</p>
           </div>
         </div>
         {steps[current] && (
-          <p className="text-sm font-semibold text-[#1e1e1e] text-center">
+          <p className="text-sm font-semibold text-center" style={{ color: text }}>
             {steps[current].label}
           </p>
         )}
@@ -75,11 +84,18 @@ export const OrganicStepper = ({
   }
 
   const progressPct = Math.min(1, Math.max(0, current / Math.max(steps.length - 1, 1)));
-  const seed = useMemo(() => stringToSeed(`stepper-${steps.length}`), [steps.length]);
+  const seed = useMemo(() => stringToSeed(`stepper-${steps.length}`) + organicSeeds.stepperLine, [steps.length]);
   const linePath = useMemo(() => generateBrushPath(24, seed), [seed]);
+  const surface = getColor('surface');
+  const borderMuted = getColor('borderMuted');
+  const accent = getColor('accent');
+  const successColor = colorVariants.success.border;
+  const text = getColor('surfaceText');
+  const textMuted = getColor('surfaceTextMuted');
+  const textSubtle = getColor('surfaceTextSubtle');
 
   return (
-    <div className={`rounded-3xl bg-white p-6 ${className}`}>
+    <div className={`rounded-3xl p-6 ${className}`} style={{ backgroundColor: surface }}>
       <div className="flex flex-col gap-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           {steps.map((step, index) => {
@@ -89,15 +105,29 @@ export const OrganicStepper = ({
                 <span
                   className={`flex h-14 w-14 items-center justify-center rounded-full border-4 text-base font-semibold ${
                     status === 'current'
-                      ? 'border-[#2563eb] text-[#2563eb]'
+                      ? ''
                       : status === 'complete'
-                      ? 'border-[#16a34a] text-[#16a34a]'
-                      : 'border-[#1e1e1e]/40 text-[#1e1e1e]/50'
+                        ? ''
+                        : ''
                   }`}
+                  style={{
+                    borderColor:
+                      status === 'current'
+                        ? accent
+                        : status === 'complete'
+                          ? successColor
+                          : borderMuted,
+                    color:
+                      status === 'current'
+                        ? accent
+                        : status === 'complete'
+                          ? successColor
+                          : textMuted
+                  }}
                 >
                   {index + 1}
                 </span>
-                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#1e1e1e]/60">
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: textSubtle }}>
                   {step.label}
                 </p>
               </div>
@@ -109,7 +139,7 @@ export const OrganicStepper = ({
             <path
               d={linePath}
               fill="none"
-              stroke="#e5e7eb"
+              stroke={borderMuted}
               strokeWidth={8}
               strokeLinecap="round"
               vectorEffect="non-scaling-stroke"
@@ -122,7 +152,7 @@ export const OrganicStepper = ({
             <path
               d={linePath}
               fill="none"
-              stroke="#2563eb"
+              stroke={accent}
               strokeWidth={10}
               strokeLinecap="round"
               vectorEffect="non-scaling-stroke"

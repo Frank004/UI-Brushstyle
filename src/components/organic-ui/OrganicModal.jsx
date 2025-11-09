@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
-import { getFontFamily, getFontWeight, getFontSize } from './utils';
+import { getFontFamily, getFontWeight, getFontSize, getColor } from './utils';
 
 /**
  * OrganicModal - Modal/Dialog con estilo orgánico
@@ -70,6 +70,8 @@ export const OrganicModal = ({
     }
   };
 
+  const textColor = getColor('surfaceText');
+
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 animate-[fadeIn_0.2s_ease-out]"
@@ -96,7 +98,7 @@ export const OrganicModal = ({
                   fontWeight: getFontWeight('bold'),
                   fontSize: getFontSize('xl'),
                   lineHeight: 1,
-                  color: '#111827'
+                  color: textColor
                 }}
               >
                 ×

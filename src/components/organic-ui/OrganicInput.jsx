@@ -2,7 +2,9 @@
 // ARCHIVO: src/components/organic-ui/OrganicInput.jsx
 // ============================================
 import React, { useMemo } from 'react';
-import { generateOrganicPath, brushShadows, getFontFamily, getFontSize, getSpacing, getFontWeight } from './utils';
+import { generateOrganicPath, brushShadows, getFontFamily, getFontSize, getSpacing, getFontWeight, getColor, organicSeeds, organicShapePresets } from './utils';
+
+const INPUT_PRESET = organicShapePresets.input;
 
 /**
  * OrganicInput - Input con estilo orgánico
@@ -39,15 +41,27 @@ export const OrganicInput = ({
   
   const pathD = useMemo(() => {
     return generateOrganicPath({
-      width: 600,
+      width: INPUT_PRESET.width,
       height,
-      cornerRadius: 12,
-      wobbleIntensity: 7,
-      seed: 54321 // Seed fijo para consistencia
+      cornerRadius: INPUT_PRESET.cornerRadius,
+      wobbleIntensity: INPUT_PRESET.wobble,
+      seed: organicSeeds.input
     });
   }, [height]);
 
-  const inputClasses = "relative z-10 w-full h-full px-4 py-3 bg-transparent outline-none text-gray-800 disabled:cursor-not-allowed disabled:opacity-50";
+  const inputClasses = "relative z-10 w-full h-full px-4 py-3 bg-transparent outline-none disabled:cursor-not-allowed disabled:opacity-50";
+ 
+  const surfaceColor = getColor('surface');
+  const borderColor = getColor('border');
+  const textColor = getColor('surfaceText');
+
+  const typographyStyle = {
+    fontFamily: getFontFamily('body'),
+    fontSize: getFontSize('md'),
+    lineHeight: 1.5,
+    fontWeight: getFontWeight('regular'),
+    color: textColor
+  };
 
   const containerStyle = {
     height: `${height}px`,
@@ -59,13 +73,13 @@ export const OrganicInput = ({
     <div className={`relative w-full ${className}`} style={containerStyle}>
       <svg 
         className="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox={`0 0 600 ${height}`}
+        viewBox={`0 0 ${INPUT_PRESET.width} ${height}`}
         preserveAspectRatio="none"
       >
         <path
           d={pathD}
-          fill="white"
-          stroke="black"
+          fill={surfaceColor}
+          stroke={borderColor}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -82,12 +96,7 @@ export const OrganicInput = ({
           rows={rows}
           disabled={disabled}
           className={`${inputClasses} resize-none`}
-          style={{
-            fontFamily: getFontFamily('body'),
-            fontSize: getFontSize('md'),
-            lineHeight: 1.5,
-            fontWeight: getFontWeight('regular')
-          }}
+          style={typographyStyle}
         />
       ) : (
         <input
@@ -100,12 +109,7 @@ export const OrganicInput = ({
           maxLength={maxLength}
           disabled={disabled}
           className={inputClasses}
-          style={{
-            fontFamily: getFontFamily('body'),
-            fontSize: getFontSize('md'),
-            lineHeight: 1.5,
-            fontWeight: getFontWeight('regular')
-          }}
+          style={typographyStyle}
         />
       )}
     </div>

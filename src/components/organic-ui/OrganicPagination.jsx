@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { OrganicButton } from './OrganicButton';
-import { brushShadows } from './utils';
+import { brushShadows, getColor } from './utils';
 import { TfiAngleLeft, TfiAngleRight } from 'react-icons/tfi';
 
 const createPages = (current, total, siblingCount = 1) => {
@@ -46,9 +46,11 @@ export const OrganicPagination = ({
     }
   };
 
+  const textMuted = getColor('surfaceTextMuted');
+
   return (
     <div
-      className={`inline-flex flex-wrap items-center gap-3 rounded-3xl bg-white/60 px-6 py-4 ${className}`}
+      className={`inline-flex flex-wrap items-center gap-3 rounded-3xl px-6 py-4 ${className}`}
     >
       <OrganicButton
         size="small"
@@ -64,7 +66,7 @@ export const OrganicPagination = ({
           <span className="hidden sm:inline">Anterior</span>
         </span>
       </OrganicButton>
-      <div className="flex items-center gap-2 text-sm font-semibold text-[#1e1e1e]/70">
+      <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: textMuted }}>
         {pages.map((item, index) => {
           if (typeof item === 'string') {
             return <span key={item + index} className="px-2">…</span>;

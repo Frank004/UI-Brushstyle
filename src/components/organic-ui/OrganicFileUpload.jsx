@@ -2,7 +2,7 @@ import React, { useRef, useState, useMemo } from 'react';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
 import { TfiUpload } from 'react-icons/tfi';
-import { brushShadows } from './utils';
+import { brushShadows, getColor, colorVariants } from './utils';
 
 const formatBytes = (bytes) => {
   if (bytes === 0 || !bytes) return '0 B';
@@ -26,6 +26,17 @@ export const OrganicFileUpload = ({
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
 
+  const accent = getColor('accent');
+  const success = colorVariants.success.border;
+  const borderDefault = getColor('border');
+  const borderMuted = getColor('borderMuted');
+  const surface = getColor('surface');
+  const surfaceActive = getColor('surfaceActive');
+  const surfaceAlt = getColor('surfaceAlt');
+  const textPrimary = getColor('surfaceText');
+  const textMuted = getColor('surfaceTextMuted');
+  const textSubtle = getColor('surfaceTextSubtle');
+
   const handleFiles = (fileList) => {
     const arrayFiles = Array.from(fileList ?? []);
     const filtered = maxSize
@@ -42,17 +53,17 @@ export const OrganicFileUpload = ({
   };
 
   const borderColor = useMemo(() => {
-    if (isDragging) return '#1d4ed8';
-    if (files.length > 0) return '#047857';
-    return '#000000';
-  }, [isDragging, files.length]);
+    if (isDragging) return accent;
+    if (files.length > 0) return success;
+    return borderDefault;
+  }, [accent, success, borderDefault, isDragging, files.length]);
 
   return (
     <OrganicBox
       className={`transition-shadow duration-200 ${className}`}
       strokeWidth={strokeWidth}
       strokeColor={borderColor}
-      backgroundColor={isDragging ? '#eff6ff' : '#ffffff'}
+      backgroundColor={isDragging ? surfaceActive : surface}
       style={{ filter: isDragging ? brushShadows.medium : brushShadows.soft }}
     >
       <div
@@ -73,14 +84,20 @@ export const OrganicFileUpload = ({
         }}
         onDrop={handleDrop}
       >
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/80 border-2 border-dashed border-[#1e1e1e]/30">
-          <TfiUpload className="h-6 w-6 text-[#1e1e1e]/70" />
+        <span
+          className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed"
+          style={{
+            backgroundColor: surfaceAlt,
+            borderColor: borderMuted
+          }}
+        >
+          <TfiUpload className="h-6 w-6" style={{ color: textMuted }} />
         </span>
         <div className="space-y-1">
-          <p className="text-[#1e1e1e] font-semibold">{label}</p>
-          <p className="text-sm text-[#1e1e1e]/70">{description}</p>
+          <p className="font-semibold" style={{ color: textPrimary }}>{label}</p>
+          <p className="text-sm" style={{ color: textMuted }}>{description}</p>
           {maxSize && (
-            <p className="text-xs text-[#1e1e1e]/50">Tamaño máximo: {formatBytes(maxSize)}</p>
+            <p className="text-xs" style={{ color: textSubtle }}>Tamaño máximo: {formatBytes(maxSize)}</p>
           )}
         </div>
         <OrganicButton
@@ -100,9 +117,12 @@ export const OrganicFileUpload = ({
           onChange={(event) => handleFiles(event.target.files)}
         />
         {files.length > 0 && (
-          <div className="w-full rounded-2xl bg-white/70 p-4 text-left shadow-sm">
-            <p className="text-sm font-semibold text-[#1e1e1e] mb-2">Archivos seleccionados</p>
-            <ul className="space-y-1 text-sm text-[#1e1e1e]/70">
+          <div
+            className="w-full rounded-2xl p-4 text-left shadow-sm"
+            style={{ backgroundColor: surfaceAlt }}
+          >
+            <p className="text-sm font-semibold" style={{ color: textPrimary }}>Archivos seleccionados</p>
+            <ul className="space-y-1 text-sm" style={{ color: textMuted }}>
               {files.map((file) => (
                 <li key={`${file.name}-${file.size}`} className="flex items-center justify-between gap-3">
                   <span className="truncate">{file.name}</span>

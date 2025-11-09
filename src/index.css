@@ -8,9 +8,16 @@
   --brush-spacing-xl: 1.75rem;
   --brush-spacing-container: clamp(1.25rem, 4vw, 2.75rem);
   --brush-surface: #ffffff;
+  --brush-surface-alt: #f8fafc;
+  --brush-surface-active: #eff6ff;
   --brush-border: #111827;
+  --brush-border-muted: rgba(17, 24, 39, 0.14);
   --brush-text: #1f2937;
+  --brush-text-muted: rgba(31, 41, 55, 0.72);
+  --brush-text-subtle: rgba(31, 41, 55, 0.55);
   --brush-surface-text: #1f2937;
+  --brush-surface-text-muted: rgba(31, 41, 55, 0.68);
+  --brush-surface-text-subtle: rgba(31, 41, 55, 0.52);
   --brush-accent: #2563eb;
   --brush-shadow: drop-shadow(4px 4px 0 rgba(15, 23, 42, 0.08));
   --brush-background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 45%, #fde4f9 100%);
@@ -30,6 +37,47 @@ body {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-ink {
+  color: var(--brush-text);
+}
+
+.text-ink-muted {
+  color: var(--brush-text-muted);
+}
+
+.text-ink-subtle {
+  color: var(--brush-text-subtle);
+}
+
+.bg-surface {
+  background-color: var(--brush-surface);
+}
+
+.bg-surface-alt {
+  background-color: var(--brush-surface-alt);
+}
+
+.bg-surface-active {
+  background-color: var(--brush-surface-active);
+}
+
+.hover-bg-surface-active:hover {
+  background-color: var(--brush-surface-active);
+}
+
+.border-ink {
+  border-color: var(--brush-border);
+}
+
+.border-ink-muted {
+  border-color: var(--brush-border-muted);
+}
+
+.divide-ink > :not([hidden]) ~ :not([hidden]) {
+  border-width: 0;
+  border-top: 1px solid var(--brush-border-muted);
+}
 
 /* Custom animations */
 @keyframes fadeIn {
@@ -195,5 +243,9 @@ textarea:-moz-autofill {
 .organic-slider-range::-moz-range-track {
   height: 0;
   background: transparent;
+}
+
+.hover-text-ink:hover {
+  color: var(--brush-text);
 }
 

@@ -42,20 +42,50 @@ function Example() {
 
 ## Design Tokens
 
-UI Brushstyle expone tokens reutilizables desde `@brushstyle/organic-ui`. Úsalos para mantener spacing y tipografías consistentes:
+UI Brushstyle expone tokens reutilizables desde `@brushstyle/organic-ui`. Úsalos para mantener spacing, tipografías **y colores** consistentes:
 
 ```jsx
-import { spacingTokens, typographyTokens, getSpacing, getFontFamily } from '@brushstyle/organic-ui';
+import {
+  spacingTokens,
+  typographyTokens,
+  colorTokens,
+  getSpacing,
+  getFontFamily,
+  getColor
+} from '@brushstyle/organic-ui';
 
 const Section = ({ children }) => (
-  <section style={{ padding: getSpacing('section'), fontFamily: getFontFamily('body') }}>
+  <section
+    style={{
+      padding: getSpacing('section'),
+      fontFamily: getFontFamily('body'),
+      background: getColor('surface'),
+      color: getColor('surfaceText')
+    }}
+  >
     {children}
   </section>
 );
 ```
 
 - **Spacing:** `spacingTokens.container`, `spacingTokens.section`, etc.
-- **Tipografía:** `typographyTokens.fonts.body`, `typographyTokens.fonts.display`, tamaños como `typographyTokens.sizes.title`.
+- **Tipografía:** `typographyTokens.fonts.body`, tamaños como `typographyTokens.sizes.title`.
+- **Colores:** `colorTokens.surface`, `colorTokens.surfaceTextMuted`, `colorTokens.accent`, etc. Se aplican vía CSS variables para responder al tema.
+
+### Presets orgánicos
+
+También tienes `organicShapePresets` y `organicSeeds` para reutilizar la configuración de bordes/semillas en tus propios SVGs:
+
+```jsx
+import { generateOrganicPath, organicShapePresets, organicSeeds } from '@brushstyle/organic-ui';
+
+const customPath = generateOrganicPath({
+  ...organicShapePresets.container,
+  seed: organicSeeds.box,
+  width: 400,
+  height: 160
+});
+```
 
 ## Theme Provider
 
@@ -93,10 +123,10 @@ Internamente el provider usa **Context API** + **useState** para gestionar el te
 
 | Categoría | Componentes |
 | --- | --- |
-| Fundamentos | `OrganicBox`, `OrganicCard`, `OrganicButton`, `OrganicBadge`, `OrganicBadgeCount` |
+| Fundamentos | `OrganicBox`, `OrganicCard`, `OrganicDivider`, `OrganicButton`, `OrganicBadge`, `OrganicBadgeCount` |
 | Formularios | `OrganicInput`, `OrganicSelect`, `OrganicCheckbox`, `OrganicRadio`, `OrganicRadioGroup`, `OrganicToggle`, `OrganicFileUpload`, `OrganicSlider` |
 | Feedback | `OrganicAlert`, `OrganicToastProvider` + `useOrganicToast`, `OrganicTooltip` |
-| Navegación / Layout | `OrganicNavbar`, `OrganicTabs`, `OrganicPagination`, `OrganicModal` |
+| Navegación / Layout | `OrganicNavbar`, `OrganicTabs`, `OrganicPagination`, `OrganicModal`, `OrganicDrawer`, `OrganicPopover`, `OrganicTable`, `OrganicStepper` |
 
 Consulta la guía detallada con props y ejemplos: [`docs/COMPONENT_GUIDE.md`](docs/COMPONENT_GUIDE.md).
 
@@ -118,8 +148,8 @@ La app demo está en `src/App.jsx`. Allí puedes ver ejemplos de cada componente
 ## Siguiente pasos
 
 - Publicar paquete npm
-- Añadir componentes de Prioridad 3 (Drawer, Popover, Table, Stepper)
-- Diseñar ejemplos completos de layouts con Brushstyle UI
+- Añadir ejemplos extendidos con los nuevos componentes (Drawer, Popover, Table, Stepper) en la documentación
+- Incorporar tests automatizados para los generadores orgánicos y el ThemeProvider
 
 ---
 

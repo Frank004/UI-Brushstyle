@@ -2,7 +2,7 @@
 // ARCHIVO: src/components/organic-ui/OrganicTooltip.jsx
 // ============================================
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { generateOrganicPath } from './utils';
+import { generateOrganicPath, getColor, organicSeeds } from './utils';
 
 /**
  * OrganicTooltip - Tooltip con estilo orgánico
@@ -34,7 +34,7 @@ export const OrganicTooltip = ({
       height: 40,
       cornerRadius: 8,
       wobbleIntensity: 4,
-      seed: 99999
+      seed: organicSeeds.tooltip
     });
   }, []);
 
@@ -118,15 +118,18 @@ export const OrganicTooltip = ({
             >
               <path
                 d={pathD}
-                fill="black"
-                stroke="black"
+                fill={getColor('border')}
+                stroke={getColor('border')}
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 vectorEffect="non-scaling-stroke"
               />
             </svg>
-            <span className="relative z-10 text-sm text-white whitespace-nowrap">
+            <span
+              className="relative z-10 text-sm whitespace-nowrap"
+              style={{ color: getColor('surface') }}
+            >
               {content}
             </span>
           </div>

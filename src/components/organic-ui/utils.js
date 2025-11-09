@@ -228,5 +228,30 @@ export const brushShadows = {
   medium: 'drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.08))'
 };
 
-export { spacingTokens, typographyTokens, getSpacing, getFontFamily, getFontSize, getFontWeight } from './theme';
+export const organicSeeds = {
+  box: 87431,
+  button: 12345,
+  input: 54321,
+  selectTrigger: 11111,
+  selectMenu: 22222,
+  tooltip: 99999,
+  radioOuter: 44444,
+  radioInner: 55555,
+  tabsLine: 42,
+  popoverPointer: 908,
+  sliderLine: 70007,
+  stepperLine: 52021
+};
+
+export const organicShapePresets = {
+  container: { width: 600, height: 220, cornerRadius: 16, wobble: 6 },
+  button: { cornerRadius: 20, wobble: 8, widthRatio: 15 },
+  input: { width: 600, cornerRadius: 14, wobble: 10 },
+  selectTrigger: { width: 600, cornerRadius: 14, wobble: 8 },
+  selectMenu: { width: 520, cornerRadius: 18, wobble: 6 },
+  tooltip: { cornerRadius: 12, wobble: 5 },
+  popover: { cornerRadius: 14, wobble: 3 }
+};
+
+export { spacingTokens, typographyTokens, getSpacing, getFontFamily, getFontSize, getFontWeight, colorTokens, getColor } from './theme';
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { OrganicBox } from './OrganicBox';
 import { OrganicButton } from './OrganicButton';
+import { getColor } from './utils';
 
 const DrawerOverlay = ({ isOpen, onClose, blur }) => {
   if (!isOpen) return null;
@@ -27,6 +28,9 @@ export const OrganicDrawer = ({
   strokeWidth = 5
 }) => {
   if (typeof document === 'undefined') return null;
+
+  const textColor = getColor('surfaceText');
+  const borderMuted = getColor('borderMuted');
 
   const sizes = {
     small: 'max-w-sm',
@@ -54,7 +58,6 @@ export const OrganicDrawer = ({
           <OrganicBox
             className={`flex h-full flex-col rounded-none ${className}`}
             strokeWidth={strokeWidth}
-            backgroundColor="#fefefe"
             style={{
               transformOrigin: position === 'right' ? 'right center' : 'left center',
               ...(position === 'right'
@@ -67,7 +70,7 @@ export const OrganicDrawer = ({
             >
               <div className="flex items-start justify-between gap-4 pb-6">
                 {title && (
-                  <h2 className="text-xl font-semibold text-[#1e1e1e]">{title}</h2>
+                  <h2 className="text-xl font-semibold" style={{ color: textColor }}>{title}</h2>
                 )}
                 <OrganicButton
                   variant="default"
@@ -85,7 +88,7 @@ export const OrganicDrawer = ({
               </div>
             </div>
             {footer && (
-              <div className="mt-6 border-t border-[#1e1e1e]/10 pt-4">
+              <div className="mt-6 border-t pt-4" style={{ borderColor: borderMuted }}>
                 {footer}
               </div>
             )}

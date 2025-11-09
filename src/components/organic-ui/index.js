@@ -42,5 +42,6 @@ export { OrganicTable } from './OrganicTable';
 export { OrganicStepper } from './OrganicStepper';
 export { OrganicDivider } from './OrganicDivider';
 export { ThemeProvider, useTheme } from './ThemeProvider';
-export { spacingTokens, typographyTokens, getSpacing, getFontFamily, getFontSize, getFontWeight, themeVariants, applyThemeVariant } from './theme';
+export { spacingTokens, typographyTokens, getSpacing, getFontFamily, getFontSize, getFontWeight, themeVariants, applyThemeVariant, colorTokens, getColor } from './theme';
+export { organicSeeds, organicShapePresets, brushShadows } from './utils';
 
