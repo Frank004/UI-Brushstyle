@@ -1,0 +1,65 @@
+{
+  "name": "@brushstyle/organic-ui",
+  "version": "1.0.0",
+  "description": "Componentes React con estilo orgánico tipo brushstroke - UI components with organic hand-drawn style",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src/components/organic-ui"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "rollup -c",
+    "preview": "vite preview",
+    "lint": "eslint src --ext js,jsx",
+    "prepublishOnly": "pnpm run build:lib"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "organic",
+    "brushstroke",
+    "hand-drawn",
+    "svg",
+    "design-system"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ui-brushstyle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ui-brushstyle/issues"
+  },
+  "homepage": "https://github.com/yourusername/ui-brushstyle#readme",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@babel/preset-react": "^7.22.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "rollup": "^4.9.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tailwindcss": "^3.3.5",
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "react-icons": "^5.5.0"
+  }
+}

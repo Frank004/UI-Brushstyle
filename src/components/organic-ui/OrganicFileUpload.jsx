@@ -1,0 +1,118 @@
+import React, { useRef, useState, useMemo } from 'react';
+import { OrganicBox } from './OrganicBox';
+import { OrganicButton } from './OrganicButton';
+import { TfiUpload } from 'react-icons/tfi';
+import { brushShadows } from './utils';
+
+const formatBytes = (bytes) => {
+  if (bytes === 0 || !bytes) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
+export const OrganicFileUpload = ({
+  label = 'Arrastra y suelta tus archivos',
+  description = 'O pulsa para seleccionarlos desde tu dispositivo',
+  accept,
+  multiple = true,
+  maxSize,
+  onFilesSelected,
+  className = '',
+  strokeWidth = 5
+}) => {
+  const inputRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [files, setFiles] = useState([]);
+
+  const handleFiles = (fileList) => {
+    const arrayFiles = Array.from(fileList ?? []);
+    const filtered = maxSize
+      ? arrayFiles.filter((file) => file.size <= maxSize)
+      : arrayFiles;
+    setFiles(filtered);
+    onFilesSelected?.(filtered);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setIsDragging(false);
+    handleFiles(event.dataTransfer.files);
+  };
+
+  const borderColor = useMemo(() => {
+    if (isDragging) return '#1d4ed8';
+    if (files.length > 0) return '#047857';
+    return '#000000';
+  }, [isDragging, files.length]);
+
+  return (
+    <OrganicBox
+      className={`transition-shadow duration-200 ${className}`}
+      strokeWidth={strokeWidth}
+      strokeColor={borderColor}
+      backgroundColor={isDragging ? '#eff6ff' : '#ffffff'}
+      style={{ filter: isDragging ? brushShadows.medium : brushShadows.soft }}
+    >
+      <div
+        className="flex flex-col items-center gap-4 text-center"
+        onDragEnter={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsDragging(true);
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsDragging(false);
+        }}
+        onDrop={handleDrop}
+      >
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/80 border-2 border-dashed border-[#1e1e1e]/30">
+          <TfiUpload className="h-6 w-6 text-[#1e1e1e]/70" />
+        </span>
+        <div className="space-y-1">
+          <p className="text-[#1e1e1e] font-semibold">{label}</p>
+          <p className="text-sm text-[#1e1e1e]/70">{description}</p>
+          {maxSize && (
+            <p className="text-xs text-[#1e1e1e]/50">Tamaño máximo: {formatBytes(maxSize)}</p>
+          )}
+        </div>
+        <OrganicButton
+          variant="primary"
+          size="medium"
+          onClick={() => inputRef.current?.click()}
+          fullWidth={false}
+        >
+          Seleccionar archivos
+        </OrganicButton>
+        <input
+          ref={inputRef}
+          type="file"
+          className="hidden"
+          multiple={multiple}
+          accept={accept}
+          onChange={(event) => handleFiles(event.target.files)}
+        />
+        {files.length > 0 && (
+          <div className="w-full rounded-2xl bg-white/70 p-4 text-left shadow-sm">
+            <p className="text-sm font-semibold text-[#1e1e1e] mb-2">Archivos seleccionados</p>
+            <ul className="space-y-1 text-sm text-[#1e1e1e]/70">
+              {files.map((file) => (
+                <li key={`${file.name}-${file.size}`} className="flex items-center justify-between gap-3">
+                  <span className="truncate">{file.name}</span>
+                  <span className="text-xs">{formatBytes(file.size)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </OrganicBox>
+  );
+};

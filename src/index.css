@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    stroke-dasharray: 0 50;
+  }
+  100% {
+    stroke-dasharray: 50 0;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Padding consistente para contenedores - Excalidraw-inspired */
+.p-8 {
+  padding: clamp(1.75rem, 6vw, 3.5rem);
+}
+
+.px-8 {
+  padding-left: clamp(1.5rem, 5vw, 3rem);
+  padding-right: clamp(1.5rem, 5vw, 3rem);
+}
+
+.py-8 {
+  padding-top: clamp(1.75rem, 6vw, 3.5rem);
+  padding-bottom: clamp(1.75rem, 6vw, 3.5rem);
+}
+
+@media (max-width: 480px) {
+  .p-8 {
+    padding: clamp(1.25rem, 7vw, 2.5rem);
+  }
+  .px-8 {
+    padding-left: clamp(1rem, 6vw, 2rem);
+    padding-right: clamp(1rem, 6vw, 2rem);
+  }
+  .py-8 {
+    padding-top: clamp(1.25rem, 7vw, 2.5rem);
+    padding-bottom: clamp(1.25rem, 7vw, 2.5rem);
+  }
+}
+
+/* Autofill overrides para mantener estilo del tema */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  -webkit-text-fill-color: #111827;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #111827;
+}
+
+input:-moz-autofill,
+textarea:-moz-autofill {
+  box-shadow: 0 0 0px 1000px transparent inset;
+  -moz-text-fill-color: #111827;
+  caret-color: #111827;
+}
+
+.organic-slider-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 44px;
+  cursor: pointer;
+}
+
+.organic-slider-range:focus {
+  outline: none;
+}
+
+.organic-slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.organic-slider-range::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.organic-slider-range::-webkit-slider-runnable-track {
+  height: 0;
+  background: transparent;
+}
+
+.organic-slider-range::-moz-range-track {
+  height: 0;
+  background: transparent;
+}
+

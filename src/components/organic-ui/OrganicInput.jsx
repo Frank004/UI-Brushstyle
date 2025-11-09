@@ -1,0 +1,102 @@
+// ============================================
+// ARCHIVO: src/components/organic-ui/OrganicInput.jsx
+// ============================================
+import React, { useMemo } from 'react';
+import { generateOrganicPath, brushShadows } from './utils';
+
+/**
+ * OrganicInput - Input con estilo orgánico
+ * @param {Object} props
+ * @param {string} props.placeholder - Texto placeholder
+ * @param {string} props.value - Valor del input
+ * @param {Function} props.onChange - Función onChange
+ * @param {string} props.type - Tipo de input (text, email, password, etc)
+ * @param {boolean} props.multiline - Si es textarea
+ * @param {number} props.rows - Número de filas para textarea
+ * @param {number} props.maxLength - Longitud máxima
+ * @param {string} props.className - Clases CSS adicionales
+ * @param {number} props.strokeWidth - Grosor del borde
+ * @param {boolean} props.disabled - Si está deshabilitado
+ * @param {string} props.name - Nombre del input
+ * @param {string} props.id - ID del input
+ */
+export const OrganicInput = ({ 
+  placeholder = "",
+  value,
+  onChange,
+  type = "text",
+  multiline = false,
+  rows = 1,
+  maxLength,
+  className = "",
+  strokeWidth = 4,
+  disabled = false,
+  name,
+  id,
+  style = {}
+}) => {
+  const height = multiline ? (rows * 36 + 24) : 44;
+  
+  const pathD = useMemo(() => {
+    return generateOrganicPath({
+      width: 600,
+      height,
+      cornerRadius: 12,
+      wobbleIntensity: 7,
+      seed: 54321 // Seed fijo para consistencia
+    });
+  }, [height]);
+
+  const inputClasses = "relative z-10 w-full h-full px-4 py-3 bg-transparent outline-none text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-base";
+
+  const containerStyle = {
+    height: `${height}px`,
+    filter: brushShadows.soft,
+    ...style
+  };
+
+  return (
+    <div className={`relative w-full ${className}`} style={containerStyle}>
+      <svg 
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox={`0 0 600 ${height}`}
+        preserveAspectRatio="none"
+      >
+        <path
+          d={pathD}
+          fill="white"
+          stroke="black"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      {multiline ? (
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          rows={rows}
+          disabled={disabled}
+          className={`${inputClasses} resize-none`}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          disabled={disabled}
+          className={inputClasses}
+        />
+      )}
+    </div>
+  );
+};
+
